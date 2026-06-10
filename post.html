@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Post | Classic Creative Co</title>
+  <meta name="description" content="Single post page for Classic Creative Co offers and creative design packages.">
+  <link rel="icon" type="image/png" href="assets/classic-co-logo.png">
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container navbar">
+      <a class="brand" href="index.html">
+        <img src="assets/classic-co-logo.png" alt="Classic Creative Co logo">
+        <div>
+          <span><strong>Classic Creative Co</strong></span>
+          <small>Graphic Design & Web Design</small>
+        </div>
+      </a>
+      <nav class="nav-links">
+        <a href="index.html">Home</a>
+        <a class="active" href="post.html">Post</a>
+        <a href="admin.html">Admin</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="page-hero">
+      <div class="container surface">
+        <span class="eyebrow">Project / Offer Detail</span>
+        <h2 class="mt-1">Detailed post view with its own unique URL</h2>
+        <p class="text-muted mt-1">Every saved post can be opened through a separate slug-based link and shared directly with customers.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container detail-layout">
+        <div id="postDetail"></div>
+
+        <aside class="sidebar-stack">
+          <div class="sidebar-card">
+            <h3>Share this post</h3>
+            <p class="mt-1">Copy and send the unique URL for this post.</p>
+            <div class="field mt-2">
+              <input id="shareUrl" type="text" readonly value="">
+            </div>
+            <div class="form-actions">
+              <button class="btn-outline" type="button" onclick="navigator.clipboard.writeText(document.getElementById('shareUrl').value)">Copy URL</button>
+              <a class="btn" href="admin.html">Edit in Admin</a>
+            </div>
+          </div>
+
+          <div class="sidebar-card">
+            <h3>Quick Info</h3>
+            <div id="quickMeta" class="mini-list mt-2"></div>
+          </div>
+
+          <div class="ad-slot">
+            <div class="ad-note">Advertisement</div>
+            <script async="async" data-cfasync="false" src="https://pl29666914.effectivecpmnetwork.com/3d746d146b076df722c2f681fdd15e79/invoke.js"></script>
+            <div id="container-3d746d146b076df722c2f681fdd15e79"></div>
+            <div class="ad-fallback">Detail page ad block for desktop sidebar and mobile inline display.</div>
+          </div>
+        </aside>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid surface">
+      <div>
+        <div class="brand">
+          <img src="assets/classic-co-logo.png" alt="Classic Creative Co logo">
+          <div>
+            <span><strong>Classic Creative Co</strong></span>
+            <small>Graphic Design & Web Design</small>
+          </div>
+        </div>
+        <p class="footer-copy">© <span data-year></span> Classic Creative Co. Professional static website experience.</p>
+      </div>
+      <div class="ad-slot">
+        <div class="ad-note">Advertisement</div>
+        <script src="https://pl29666915.effectivecpmnetwork.com/14/30/5d/14305d8437d7a192d411b4a39620aacb.js"></script>
+        <div class="ad-fallback">Additional ad placement for extended session depth.</div>
+      </div>
+    </div>
+  </footer>
+
+  <script type="module" src="assets/common.js"></script>
+</body>
+</html>

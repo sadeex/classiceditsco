@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel | Classic Creative Co</title>
+  <meta name="description" content="Admin panel for managing Classic Creative Co posts.">
+  <link rel="icon" type="image/png" href="assets/classic-co-logo.png">
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container navbar">
+      <a class="brand" href="index.html">
+        <img src="assets/classic-co-logo.png" alt="Classic Creative Co logo">
+        <div>
+          <span><strong>Classic Creative Co</strong></span>
+          <small>Graphic Design & Web Design</small>
+        </div>
+      </a>
+      <nav class="nav-links">
+        <a href="index.html">Home</a>
+        <a class="active" href="admin.html">Admin</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section id="loginView" class="login-shell">
+      <div class="login-card">
+        <span class="eyebrow">Admin Access</span>
+        <h2 class="mt-2">Login to manage posts</h2>
+        <p class="text-muted">Only the admin can add, edit, or delete posts from this panel.</p>
+        <form id="loginForm" class="mt-3">
+          <div class="field">
+            <label for="email">Admin Username</label>
+            <input id="email" type="email" placeholder="Enter admin email" required>
+          </div>
+          <div class="field mt-2">
+            <label for="password">Passcode</label>
+            <input id="password" type="password" placeholder="Enter passcode" required>
+          </div>
+          <div class="form-actions mt-3">
+            <button class="btn" type="submit">Login</button>
+            <a class="btn-outline" href="index.html">Back to Site</a>
+          </div>
+        </form>
+        <div id="loginStatus" class="status-message hide"></div>
+        <div class="notice">
+          Me version eka Firebase Authentication, Cloud Firestore, saha Firebase Storage use karanawa. E nisa post hama device ekema live pennanawa.
+        </div>
+      </div>
+    </section>
+
+    <section id="dashboardView" class="section hide">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <h3>Admin Dashboard</h3>
+            <p>Title, description, category, price in LKR, image, and custom order URL ekka post manage karanna.</p>
+          </div>
+          <div class="inline-actions">
+            <button id="exportBtn" class="btn-outline" type="button">Export Posts</button>
+            <label class="btn-outline" for="importInput">Import JSON</label>
+            <input id="importInput" type="file" accept="application/json" class="hide">
+            <button id="logoutBtn" class="btn-danger" type="button">Logout</button>
+          </div>
+        </div>
+
+        <div class="dashboard-grid">
+          <div class="admin-card">
+            <span class="eyebrow">Post Editor</span>
+            <h2 id="editorHeading" class="mt-2">Create New Post</h2>
+            <p class="text-muted">Slug ekak denna puluwan. Nathi nam title eken auto generate wenawa.</p>
+
+            <form id="postForm" class="mt-3">
+              <input id="oldSlug" type="hidden">
+              <input id="existingImage" type="hidden">
+              <input id="existingImagePath" type="hidden">
+              <div class="form-grid">
+                <div class="field">
+                  <label for="title">Title</label>
+                  <input id="title" type="text" placeholder="Example: Premium Logo Design Package" required>
+                </div>
+                <div class="field">
+                  <label for="slug">Slug / URL Name</label>
+                  <input id="slug" type="text" placeholder="example-premium-logo-package">
+                </div>
+                <div class="field">
+                  <label for="category">Category</label>
+                  <input id="category" type="text" placeholder="Graphic Design / Web Design" required>
+                </div>
+                <div class="field">
+                  <label for="price">Price (LKR)</label>
+                  <input id="price" type="number" min="0" step="1" placeholder="15000" required>
+                </div>
+                <div class="field full">
+                  <label for="description">Description</label>
+                  <textarea id="description" placeholder="Write the full post description..." required></textarea>
+                </div>
+                <div class="field">
+                  <label for="imageUrl">Image URL</label>
+                  <input id="imageUrl" type="url" placeholder="https://example.com/image.jpg">
+                </div>
+                <div class="field">
+                  <label for="imageFile">Or Upload Image to Firebase Storage</label>
+                  <input id="imageFile" type="file" accept="image/*">
+                </div>
+                <div class="field full">
+                  <label for="orderLink">Order Now Link</label>
+                  <input id="orderLink" type="url" placeholder="https://wa.me/... or https://your-order-link.com" required>
+                </div>
+                <div class="field full">
+                  <label for="shareLink">Generated Post URL</label>
+                  <input id="shareLink" type="text" readonly placeholder="Saved post URL will appear here">
+                </div>
+              </div>
+              <div class="form-actions mt-3">
+                <button class="btn" type="submit">Save Post</button>
+                <button id="copyShareBtn" class="btn-outline" type="button">Copy URL</button>
+                <button id="resetBtn" class="btn-ghost" type="button">Reset Form</button>
+              </div>
+            </form>
+            <div id="formStatus" class="status-message hide"></div>
+          </div>
+
+          <div class="admin-card">
+            <span class="eyebrow">Live Preview</span>
+            <div id="imagePreview" class="preview-box mt-2"></div>
+            <div class="divider"></div>
+            <span class="eyebrow">Saved Posts</span>
+            <p id="postsLoadingNote" class="help-text mt-1">Loading live posts from Firebase...</p>
+            <div id="postsList" class="mini-list mt-2"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script type="module" src="assets/admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,66 @@
+Classic Creative Co - Firebase Setup Notes
+
+This website now uses:
+- Firebase Authentication (Email/Password)
+- Cloud Firestore
+- Firebase Storage
+
+Result:
+- Admin login works through Firebase Auth
+- Posts are saved in Firestore
+- Uploaded images can go to Firebase Storage
+- Posts appear on all devices
+
+Required Firebase console setup
+==============================
+
+1. Authentication
+- Firebase Console > Authentication > Sign-in method
+- Enable: Email/Password
+- Create admin user:
+  Email: sadithas59@gmail.com
+  Password: Time?7@@
+- Authentication > Settings > Authorized domains
+- Add your GitHub Pages domain if needed
+  Example: your-username.github.io
+
+2. Firestore Database
+- Firebase Console > Firestore Database
+- Create database if not already created
+- Start in production or test mode
+- Collection used by site: posts
+
+3. Storage
+- Firebase Console > Storage
+- Get started / enable Storage
+
+Recommended Firestore Rules
+===========================
+
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /posts/{postId} {
+      allow read: if true;
+      allow write: if request.auth != null && request.auth.token.email == 'sadithas59@gmail.com';
+    }
+  }
+}
+
+Recommended Storage Rules
+=========================
+
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    match /posts/{allPaths=**} {
+      allow read: if true;
+      allow write: if request.auth != null && request.auth.token.email == 'sadithas59@gmail.com';
+    }
+  }
+}
+
+Important
+=========
+- In Arena preview or offline preview, Firebase scripts may not load because external network access can be blocked.
+- On GitHub Pages or live hosting, the Firebase-connected site should work normally.
