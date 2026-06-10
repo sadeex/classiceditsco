@@ -4,6 +4,8 @@ import {
   signInWithEmailAndPassword,
   onAuthStateChanged,
   signOut,
+  setPersistence,
+  browserLocalPersistence,
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import {
   collection,
@@ -46,6 +48,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let postsUnsubscribe = null;
 
+  const AUTH_ERROR_MESSAGES = {
+    "auth/invalid-credential": "Email eka hari password eka hari වැරදියි. Firebase Authentication wala me admin user eka hadala thiyenawada kiyala check karanna.",
+    "auth/invalid-login-credentials": "Email eka hari password eka hari වැරදියි.",
+    "auth/user-not-found": "Me email eken Firebase Authentication user ekak nathi bawak pennanawa.",
+    "auth/wrong-password": "Password eka වැරදියි.",
+    "auth/invalid-email": "Email address eka hari format ekata denna.",
+    "auth/operation-not-allowed": "Firebase Authentication wala Email/Password sign-in enable karala ne.",
+    "auth/network-request-failed": "Firebase server ekata connect wenna bari una. Internet connection eka saha live hosting eka check karanna.",
+    "auth/too-many-requests": "Godak login attempts nisa temporary block wela. Tikak passe try karanna.",
+    "auth/unauthorized-domain": "Me domain eka Firebase Authentication wala authorize karala ne. Firebase Console > Authentication > Settings > Authorized domains walata me domain eka add karanna.",
+  };
+
   const show = (el) => el?.classList.remove("hide");
   const hide = (el) => el?.classList.add("hide");
 
@@ -54,6 +68,11 @@ document.addEventListener("DOMContentLoaded", () => {
     mount.textContent = message;
     mount.className = `status-message ${type}`;
     show(mount);
+  };
+
+  const getAuthMessage = (error) => {
+    const code = error?.code || "";
+    return AUTH_ERROR_MESSAGES[code] || error?.message || "Login failed.";
   };
 
   const clearStatus = (mount) => {
@@ -174,12 +193,32 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const email = document.getElementById("email").value.trim();
     const password = document.getElementById("password").value;
+    const submitBtn = loginForm.querySelector('button[type="submit"]');
+    const originalLabel = submitBtn?.textContent || "Login";
 
     try {
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Logging in...";
+      }
+
+      await setPersistence(auth, browserLocalPersistence);
       await signInWithEmailAndPassword(auth, email, password);
-      setStatus(loginStatus, "Login successful.", "success");
+      setStatus(loginStatus, "Login successful. Dashboard eka open wenawa...", "success");
     } catch (error) {
-      setStatus(loginStatus, error.message || "Login failed.", "error");
+      const host = window.location.hostname || "current host";
+      let message = getAuthMessage(error);
+
+      if (error?.code === "auth/unauthorized-domain") {
+        message += ` Current domain: ${host}`;
+      }
+
+      setStatus(loginStatus, message, "error");
+    } finally {
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalLabel;
+      }
     }
   });
 
@@ -348,6 +387,10 @@ document.addEventListener("DOMContentLoaded", () => {
       if (postsUnsubscribe) postsUnsubscribe();
     }
   });
+
+  if (window.location.protocol === "file:") {
+    setStatus(loginStatus, "Me admin panel eka file:// widiyata open karala nam Firebase login wada karanna puluwan nathiwena welawath thiyenawa. GitHub Pages ho live hosting walin open karanna.", "error");
+  }
 
   updatePreview();
 });
